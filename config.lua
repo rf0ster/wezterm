@@ -39,10 +39,10 @@ config.use_fancy_tab_bar = false
 -- Keybindings for moving between split panes
 config.keys = {
     -- Split panes
-    { key="7", mods="CTRL", action=wezterm.action.SplitPane({ direction = "Left", })},
-    { key="8", mods="CTRL", action=wezterm.action.SplitPane({ direction = "Down", size = { Percent = 20 } })},
-    { key="9", mods="CTRL", action=wezterm.action.SplitPane({ direction = "Up", size = { Percent = 20 } })},
-    { key="0", mods="CTRL", action=wezterm.action.SplitPane({ direction = "Right", })},
+    { key="h", mods="CTRL|ALT", action=wezterm.action.SplitPane({ direction = "Left", })},
+    { key="j", mods="CTRL|ALT", action=wezterm.action.SplitPane({ direction = "Down", size = { Percent = 20 } })},
+    { key="k", mods="CTRL|ALT", action=wezterm.action.SplitPane({ direction = "Up", size = { Percent = 20 } })},
+    { key="l", mods="CTRL|ALT", action=wezterm.action.SplitPane({ direction = "Right", })},
     { key = "-", mods = "CTRL", action = wezterm.action_callback(function(_, pane)
             local tab = pane:tab()
             local panes = tab:panes_with_info()
@@ -81,6 +81,10 @@ config.keys = {
 
     -- Close current pane by pressing control + delete
     { key="Delete", mods="CTRL", action=wezterm.action({CloseCurrentPane={confirm=true}})},
+    { key = "1", mods = "ALT", action = wezterm.action{ActivateTab=0} },
+    { key = "2", mods = "ALT", action = wezterm.action{ActivateTab=1} },
+    { key = "3", mods = "ALT", action = wezterm.action{ActivateTab=2} },
+    { key = "4", mods = "ALT", action = wezterm.action{ActivateTab=3} },
 }
 
 return config
