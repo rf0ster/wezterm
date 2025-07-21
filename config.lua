@@ -1,40 +1,49 @@
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
 
--- This will hold the configuration.
+-- This will hold the configuration
 local config = wezterm.config_builder()
 config.color_scheme = 'Cyberdyne'
 config.window_background_opacity = 0.6
+
+local bg_color = "rgba(21, 17, 68, 0.6)"
 config.colors = {
     tab_bar = {
-        background = "rgba(21, 17, 68, 0.3)",
+        background = bg_color,
         active_tab = {
-            bg_color = "rgba(21, 17, 68, 0.6)",
+            bg_color = bg_color,
             fg_color = "#ffffff",
+            intensity = "Bold",
+            underline = "None",
+            italic = false,
+            strikethrough = false,
         },
         inactive_tab = {
-            bg_color = "rgba(21, 17, 68, 0.3)",
-            fg_color = "#ffffff",
+            bg_color = bg_color,
+            fg_color = "#888888",
         },
         inactive_tab_hover = {
-            bg_color = "rgba(21, 17, 68, 0.3)",
+            bg_color = bg_color,
             fg_color = "#ffffff",
         },
         new_tab = {
-            bg_color = "rgba(21, 17, 68, 0.3)",
-            fg_color = "#ffffff",
+            bg_color = bg_color,
+            fg_color = "#888888",
         },
         new_tab_hover = {
-            bg_color = "rgba(21, 17, 68, 0.3)",
+            bg_color = bg_color,
             fg_color = "#ffffff",
         },
     }
 }
-config.tab_max_width = 20
 config.font_size = 14
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = false
+-- always show the tab bar
+config.enable_tab_bar = true
+
 
 -- Keybindings for moving between split panes
 config.keys = {
@@ -86,5 +95,28 @@ config.keys = {
     { key = "3", mods = "ALT", action = wezterm.action{ActivateTab=2} },
     { key = "4", mods = "ALT", action = wezterm.action{ActivateTab=3} },
 }
+
+local RIGHT_ARROW = wezterm.nerdfonts.pl_left_hard_divider
+local fg_tab_color = "rgba(21, 17, 75)"
+
+wezterm.on('format-tab-title',
+    function(tab, _, _, _, _, max_width)
+        local title = wezterm.truncate_right(tab.active_pane.title, max_width)
+        if tab.is_active then
+            return {
+                { Foreground = { Color = "#ffffff" } },
+                { Background = { Color = fg_tab_color } },
+                { Text = " " .. title .. " " },
+
+                { Foreground = { Color = fg_tab_color } },
+                { Background = { Color = bg_color } },
+                { Text = RIGHT_ARROW },
+            }
+        else
+            return {
+                { Text = " " .. title .. "  " },
+            }
+        end
+    end)
 
 return config
